@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+body {
+    background-color: black;
+}
+
+/* Hide default scrollbar */
+#tasklist::-webkit-scrollbar {
+    width: 8px;  /* width of the scrollbar */
+    height: 8px; /* height of horizontal scrollbar */
+}
+
+/* Track (the background) */
+#tasklist::-webkit-scrollbar-track {
+    background: #1a1a1a; /* dark background for the track */
+    border-radius: 10px;
+}
+
+/* Handle (the draggable part) */
+#tasklist::-webkit-scrollbar-thumb {
+    background: #ffbf00; /* yellow color for the thumb */
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+/* Handle on hover */
+#tasklist::-webkit-scrollbar-thumb:hover {
+    background: #e0a800; /* darken the thumb when hovered */
+}
+
+/* Corner (where horizontal and vertical scrollbars meet) */
+#tasklist::-webkit-scrollbar-corner {
+    background: transparent;
+}
