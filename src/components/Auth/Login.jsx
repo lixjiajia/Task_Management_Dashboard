@@ -12,15 +12,13 @@ function Login({ handleLogin }) {
   }
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 to-sky-900'>
-      <div className='relative w-full max-w-md px-6 py-12 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl'>
-        <div className='absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-30'></div>
+    <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 to-purple-900 px-4'>
+      <div className='relative w-full max-w-md px-10 py-20 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl'>
         
-        <div className='mb-12 text-center'>
-          <h2 className='text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-100'>
-            Welcome Back
+        <div className='mb-10 text-center'>
+          <h2 className='text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-100'>
+            Log in to continue
           </h2>
-          <p className='mt-2 text-blue-100/90'>Please sign in to continue</p>
         </div>
 
         <form onSubmit={submitHandler} className='space-y-8'>
@@ -66,8 +64,7 @@ function Login({ handleLogin }) {
 
           <button
             type='submit'
-            className='w-full px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg hover:from-blue-600 hover:to-purple-600 transform transition-all duration-200 hover:scale-[1.02] active:scale-95'
-          >
+            className='w-full px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br rounded-lg transform transition-all duration-200 hover:scale-[1.02] active:scale-95'>
             Sign In
           </button>
         </form>

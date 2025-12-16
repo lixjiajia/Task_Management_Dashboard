@@ -166,7 +166,7 @@ function CreateTask() {
         <div>
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold text-lg hover:from-indigo-500 hover:to-purple-500 transition ease-in-out duration-300"
+            className="w-full py-3 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br hover:scale-[1.02] focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 text-white rounded-lg font-semibold text-lg transition ease-in-out duration-00"
           >
             Create Task
           </button>

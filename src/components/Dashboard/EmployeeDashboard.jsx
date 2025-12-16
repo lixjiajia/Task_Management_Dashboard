@@ -5,7 +5,7 @@ import TaskList from '../TaskList/TaskList'
 
 function EmployeeDashboard(props) {
   return (
-    <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen p-8 backdrop-blur-sm">
+    <div className="bg-gradient-to-br from-slate-900 to-purple-900 px-4 min-h-screen p-8 backdrop-blur-sm">
       <div className="bg-gray-900/80 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-lg border border-white/10">
         {/* Header Section */}
         <div className="bg-gradient-to-r from-indigo-600/30 to-pink-600/30">
