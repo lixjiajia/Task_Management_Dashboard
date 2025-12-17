@@ -78,6 +78,7 @@ A modern web application for managing employee tasks with role-based access cont
    The app will be available at `http://localhost:5173`.
 
 ## Usage
+**Vercel App**: [LINK](https://task-management-dashboard-tawny.vercel.app/) 
 
 ### Login Credentials
 - **Admin**: `admin@me.com` / `123`
