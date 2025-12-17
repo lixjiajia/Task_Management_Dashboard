@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import AuthProvider from './contexts/AuthProvider.jsx'
 import { ApolloProvider } from "@apollo/client/react";
-import client from "./apolloclient";
+import client from "./apolloClient";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
