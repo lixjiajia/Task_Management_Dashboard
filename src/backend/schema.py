@@ -52,10 +52,14 @@ class CreateEmployee(graphene.Mutation):
 
     def mutate(self, info, first_name, email, password):
         session = SessionLocal()
-        emp = Employee(first_name=first_name, email=email, password=password)
-        session.add(emp)
-        session.commit()
-        return CreateEmployee(ok=True, employee=emp)
+        try:
+            emp = Employee(first_name=first_name, email=email, password=password)
+            session.add(emp)
+            session.commit()
+            session.refresh(emp)  # Refresh to ensure object is properly loaded
+            return CreateEmployee(ok=True, employee=emp)
+        finally:
+            session.close()
 
 class DeleteEmployee(graphene.Mutation):
     class Arguments:
@@ -66,12 +70,17 @@ class DeleteEmployee(graphene.Mutation):
 
     def mutate(self, info, id):
         session = SessionLocal()
-        emp = session.query(Employee).get(id)
-        if not emp:
-            return DeleteEmployee(ok=False, employee=None)
-        session.delete(emp)
-        session.commit()
-        return DeleteEmployee(ok=True, employee=emp)
+        try:
+            emp = session.query(Employee).get(id)
+            if not emp:
+                return DeleteEmployee(ok=False, employee=None)
+            # Store employee data before deletion for return
+            deleted_emp = emp
+            session.delete(emp)
+            session.commit()
+            return DeleteEmployee(ok=True, employee=deleted_emp)
+        finally:
+            session.close()
 
 class CreateTask(graphene.Mutation):
     class Arguments:
@@ -86,20 +95,24 @@ class CreateTask(graphene.Mutation):
 
     def mutate(self, info, employee_id, task_title, task_description=None, task_date=None, category=None):
         session = SessionLocal()
-        t = Task(
-            employee_id=employee_id,
-            task_title=task_title,
-            task_description=task_description,
-            task_date=task_date,
-            category=category,
-            active=True,
-            new_task=True,
-            completed=False,
-            review=False
-        )
-        session.add(t)
-        session.commit()
-        return CreateTask(ok=True, task=t)
+        try:
+            t = Task(
+                employee_id=employee_id,
+                task_title=task_title,
+                task_description=task_description,
+                task_date=task_date,
+                category=category,
+                active=True,
+                new_task=True,
+                completed=False,
+                review=False
+            )
+            session.add(t)
+            session.commit()
+            session.refresh(t)  # Refresh to ensure object is properly loaded
+            return CreateTask(ok=True, task=t)
+        finally:
+            session.close()
 
 class UpdateTaskStatus(graphene.Mutation):
     class Arguments:
@@ -111,25 +124,30 @@ class UpdateTaskStatus(graphene.Mutation):
 
     def mutate(self, info, task_id, status):
         session = SessionLocal()
-        task = session.query(Task).get(task_id)
-        if not task:
-            return UpdateTaskStatus(ok=False, task=None)
+        try:
+            task = session.query(Task).get(task_id)
+            if not task:
+                return UpdateTaskStatus(ok=False, task=None)
 
-        # Reset all statuses
-        task.active = False
-        task.new_task = False
-        task.completed = False
-        task.review = False
+            # Reset all statuses
+            task.active = False
+            task.new_task = False
+            task.completed = False
+            task.review = False
 
-        if status == 'accept':
-            task.active = True
-        elif status == 'complete':
-            task.completed = True
-        elif status == 'review':
-            task.review = True
+            if status == 'accept':
+                task.active = True
+                task.new_task = False
+            elif status == 'complete':
+                task.completed = True
+            elif status == 'review':
+                task.review = True
 
-        session.commit()
-        return UpdateTaskStatus(ok=True, task=task)
+            session.commit()
+            session.refresh(task)  # Refresh to ensure object is properly loaded
+            return UpdateTaskStatus(ok=True, task=task)
+        finally:
+            session.close()
 
 class Mutation(ObjectType):
     create_employee = CreateEmployee.Field()

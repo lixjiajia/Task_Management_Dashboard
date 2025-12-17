@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client/react";
 
 
 function CreateTask() {
-  const [userData, setUserData] = useContext(AuthContext);
+  const [userData, setUserData, refetch] = useContext(AuthContext);
 
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -48,41 +48,43 @@ function CreateTask() {
     e.preventDefault();
   
     try {
-      const assignedUser = userData.find(
-        (user) => user.firstName.toLowerCase() === assignTo.toLowerCase()
-      );
+      if (!assignTo) {
+        alert("Please select an employee to assign the task to.");
+        return;
+      }
   
-      if (!assignedUser) {
-        alert("No matching employee found.");
+      if (!taskTitle.trim()) {
+        alert("Please enter a task title.");
         return;
       }
   
       const res = await createTask({
         variables: {
-          employeeId: assignedUser.id, // Use the backend ID
-          taskTitle,
-          taskDescription,
-          taskDate,
-          category,
+          employeeId: parseInt(assignTo),
+          taskTitle: taskTitle.trim(),
+          taskDescription: taskDescription.trim() || null,
+          taskDate: taskDate || null,
+          category: category.trim() || null,
         },
       });
-  
-      if (res.data.createTask.ok) {
-        alert("✅ Task created successfully!");
+    if (res.data.createTask.ok) {
+        alert("Task created successfully!");
+        refetch();
+
+        // Reset form only on success
+        setAssignTo("");
+        setCategory("");
+        setTaskDate("");
+        setTaskTitle("");
+        setTaskDescription("");
+      } else {
+        console.error("Mutation response:", res);
+        alert("Task creation failed. Please check the console for details.");
       }
-  
-      // Optionally refetch or update your frontend state
-      // by querying employees again
     } catch (err) {
       console.error("Error creating task:", err);
+      alert(`Error creating task: ${err.message}`);
     }
-  
-    // Reset form
-    setAssignTo("");
-    setCategory("");
-    setTaskDate("");
-    setTaskTitle("");
-    setTaskDescription("");
   };
   
 
@@ -124,7 +126,7 @@ function CreateTask() {
 
         <div className="relative">
           <label htmlFor="task-date" className="block text-lg font-medium">
-            Date
+            Deadline
           </label>
           <input
             value={taskDate}
@@ -136,17 +138,35 @@ function CreateTask() {
         </div>
 
         <div className="relative">
-          <label htmlFor="employee-name" className="block text-lg font-medium">
+          <label htmlFor="employee-select" className="block text-lg font-medium">
             Assign to
           </label>
-          <input
-            value={assignTo}
-            onChange={(e) => setAssignTo(e.target.value)}
-            type="text"
-            id="employee-name"
-            className="w-full p-4 rounded-lg bg-gray-700 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition ease-in-out duration-300"
-            placeholder="Employee Name"
-          />
+          <div className="relative">
+            <select
+              value={assignTo}
+              onChange={(e) => setAssignTo(e.target.value)}
+              id="employee-select"
+              className="w-full p-4 pr-10 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 transition ease-in-out duration-300 appearance-none"
+              required
+            >
+              <option value="">Select an employee</option>
+              {userData && userData.map((employee) => (
+                <option key={employee.id} value={employee.id}>
+                  {employee.firstName} ({employee.email})
+                </option>
+              ))}
+            </select>
+            <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         <div className="relative">

@@ -25,7 +25,7 @@ const GET_EMPLOYEES = gql`
 
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState([]);
-  const { data, loading, error } = useQuery(GET_EMPLOYEES);
+  const { data, loading, error, refetch } = useQuery(GET_EMPLOYEES);
 
   useEffect(() => {
     if (data && data.employees) {
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={[userData, setUserData]}>
+    <AuthContext.Provider value={[userData, setUserData, refetch]}>
       {children}
     </AuthContext.Provider>
   );

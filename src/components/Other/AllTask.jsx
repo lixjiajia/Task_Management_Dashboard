@@ -3,7 +3,7 @@ import { AuthContext } from '../../contexts/AuthProvider';
 
 function AllTask() {
     
-    const [userData, setUserData] = useContext(AuthContext);
+    const [userData, setUserData, refetch] = useContext(AuthContext);
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
 

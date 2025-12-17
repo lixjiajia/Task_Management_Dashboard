@@ -2,8 +2,16 @@ import React from 'react'
 import Header from '../Other/Header'
 import CreateTask from '../Other/CreateTask'
 import AllTask from '../Other/AllTask'
+import { AuthContext } from '../../contexts/AuthProvider'
+import { useContext } from 'react'
 
 function AdminDashboard(props) {
+  const [userData, setUserData, refetch] = useContext(AuthContext);
+
+  const handleRefresh = () => {
+    refetch();
+  };
+
   return (
     <div className="bg-gradient-to-br from-slate-900 to-purple-900 px-4 min-h-screen p-8 backdrop-blur-sm">
       <div className="bg-gray-900/80 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-lg border border-white/10">
@@ -14,6 +22,17 @@ function AdminDashboard(props) {
 
         {/* Main Content */}
         <div className="p-6 sm:p-8 space-y-8">
+          {/* Refresh Data Button */}
+          <div className="flex justify-end">
+            <button
+              onClick={handleRefresh}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors duration-200"
+            >
+              Refresh Data
+            </button>
+          </div>
+
+
           {/* Create Task Section */}
           <div className="bg-gray-800/50 rounded-xl p-6 shadow-inner backdrop-blur-sm border border-white/5">
             <h3 className="text-xl font-semibold text-white mb-4 ml-2">Create New Task</h3>

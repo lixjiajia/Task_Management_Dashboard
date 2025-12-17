@@ -3,7 +3,7 @@ import { FiLogOut, FiUser } from 'react-icons/fi';
 import { AuthContext } from '../../contexts/AuthProvider';
 
 function Header(props) {
-  const [, setUserData] = useContext(AuthContext);
+  const [, setUserData, refetch] = useContext(AuthContext);
 
   const logoutHandler = () => {
     // In the future: clear auth token or session
