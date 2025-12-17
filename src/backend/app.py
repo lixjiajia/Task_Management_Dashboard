@@ -9,7 +9,10 @@ app = Flask(__name__)
 
 CORS(
     app,
-    origins=[os.environ.get("CORS_ORIGIN", "http://localhost:5173")],
+    origins=os.environ.get(
+    "CORS_ORIGINS",
+    "http://localhost:5173,https://task-management-dashboard-tawny.vercel.app"
+).split(",")
     allow_headers=["Content-Type", "Authorization"],
     supports_credentials=True,
     methods=["GET", "POST", "OPTIONS"]
