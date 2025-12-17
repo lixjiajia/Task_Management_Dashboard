@@ -19,6 +19,7 @@ CORS(
     },
     allow_headers=["Content-Type", "Authorization"],
     supports_credentials=True,
+    always_send=True,
     methods=["GET", "POST", "OPTIONS"],
 )
 
@@ -26,8 +27,12 @@ CORS(
 def home():
     return "<h3> Flask GraphQL API is running — visit /graphql</h3>"
 
+@app.route("/graphql", methods=["OPTIONS"])
+def graphql_options():
+    return "", 204
 
 # --- GraphQL endpoint itself ---
+
 app.add_url_rule(
     "/graphql",
     view_func=GraphQLView.as_view(
@@ -35,7 +40,7 @@ app.add_url_rule(
         schema=schema,
         graphiql=True
     ),
-    methods=["GET", "POST", "OPTIONS"]
+    methods=["GET", "POST"]
 )
 
 if __name__ == "__main__":
