@@ -2,13 +2,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_graphql import GraphQLView
 from schema import schema
+import os
 
 app = Flask(__name__)
 
 
 CORS(
     app,
-    origins=["http://localhost:5173"],
+    origins=[os.environ.get("CORS_ORIGIN", "http://localhost:5173")],
     allow_headers=["Content-Type", "Authorization"],
     supports_credentials=True,
     methods=["GET", "POST", "OPTIONS"]
