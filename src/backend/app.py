@@ -9,29 +9,23 @@ app = Flask(__name__)
 
 CORS(
     app,
-    resources={r"/graphql": {"origins": [
-        "https://task-management-dashboard-tawny.vercel.app"
-    ]}},
+    resources={
+        r"/graphql": {
+            "origins": [
+                "https://task-management-dashboard-tawny.vercel.app",
+                "http://localhost:5173",
+            ]
+        }
+    },
     allow_headers=["Content-Type", "Authorization"],
     supports_credentials=True,
-    methods=["GET", "POST", "OPTIONS"]
+    methods=["GET", "POST", "OPTIONS"],
 )
 
 @app.route("/")
 def home():
     return "<h3> Flask GraphQL API is running — visit /graphql</h3>"
 
-@app.route("/graphql", methods=["OPTIONS"])
-def graphql_options():
-    """Handle preflight requests explicitly"""
-    response = app.make_default_options_response()
-    headers = response.headers
-
-    headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
-    headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-
-    return response
 
 # --- GraphQL endpoint itself ---
 app.add_url_rule(
