@@ -79,6 +79,7 @@ A modern web application for managing employee tasks with role-based access cont
 
 ## Usage
 **Vercel App**: [LINK](https://task-management-dashboard-tawny.vercel.app/) 
+**Graphql Playground Railway App**: [LINK](https://taskmanagementdashboard-production.up.railway.app/graphql)
 
 ### Login Credentials
 - **Admin**: `admin@me.com` / `123`
