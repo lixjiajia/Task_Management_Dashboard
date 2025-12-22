@@ -140,12 +140,35 @@ class UpdateTaskStatus(graphene.Mutation):
                 task.new_task = False
             elif status == 'complete':
                 task.completed = True
+                task.active = False
             elif status == 'review':
                 task.review = True
+                task.active = False
 
             session.commit()
             session.refresh(task)  # Refresh to ensure object is properly loaded
             return UpdateTaskStatus(ok=True, task=task)
+        finally:
+            session.close()
+
+class DeleteTask(graphene.Mutation):
+    class Arguments:
+        task_id = Int(required=True)
+
+    ok = Boolean()
+    task = Field(lambda: TaskType)
+
+    def mutate(self, info, task_id):
+        session = SessionLocal()
+        try:
+            task = session.query(Task).get(task_id)
+            if not task:
+                return DeleteTask(ok=False, task=None)
+            # Store task data before deletion for return
+            deleted_task = task
+            session.delete(task)
+            session.commit()
+            return DeleteTask(ok=True, task=deleted_task)
         finally:
             session.close()
 
@@ -154,5 +177,6 @@ class Mutation(ObjectType):
     delete_employee = DeleteEmployee.Field()
     create_task = CreateTask.Field()
     update_task_status = UpdateTaskStatus.Field()
+    delete_task = DeleteTask.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
